@@ -14,13 +14,13 @@ on:
       - "prisma/**"
       - "Dockerfile"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
       - ".github/workflows/deploy.yml"
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: ${{ secrets.GCP_REGION }}
-  SERVICE_NAME: github-deployer
+  SERVICE_NAME: newsweave
   REPOSITORY: newsletter-repo
   IMAGE: newsweave-app
 
@@ -40,17 +40,11 @@ jobs:
       # -------------------------
       - name: Authenticate to GCP
         run: |
-          echo '${{ secrets.GCP_SA_KEY }}' > key.json
+          echo "${{ secrets.GCP_SA_KEY }}" > key.json
           gcloud auth activate-service-account --key-file=key.json
           gcloud config set project $PROJECT_ID
           gcloud config set run/region $REGION
 
-      # -------------------------
-      # 3️⃣ Enable Docker auth
-      # -------------------------
-      - name: Configure Docker
-        run: |
-          gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
 
       # -------------------------
       # 4️⃣ Build & Push Image (Cloud Build)
@@ -59,6 +53,7 @@ jobs:
         run: |
           gcloud builds submit \
             --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
+            --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }} \
             .
 
       # -------------------------
