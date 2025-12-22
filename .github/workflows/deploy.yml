@@ -52,13 +52,12 @@ jobs:
       # -------------------------
       # 4️⃣ Build & Push Image (Cloud Build)
       # -------------------------
-      - name: Set project
-        run: gcloud config set project newsweave-481914
-
-      - name: Build & push image
+      - name: Run Cloud Build (cloudbuild.yaml)
         run: |
           gcloud builds submit . \
-            --tag=asia-south1-docker.pkg.dev/newsweave-481914/newsletter-repo/newsweave-app:latest
+            --config=cloudbuild.yaml \
+            --substitutions=_REGION=${REGION},_REPOSITORY=${REPOSITORY},_IMAGE=${IMAGE},_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }} \
+            --timeout=900s
 
 
       # # -------------------------
