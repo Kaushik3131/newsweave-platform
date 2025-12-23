@@ -1,36 +1,226 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NewsWeave Platform 📰
 
-## Getting Started
+An AI-powered newsletter generation platform that curates content from RSS feeds and creates professional newsletters using Google's Gemini AI.
 
-First, run the development server:
+## 🌟 Features
+
+- **RSS Feed Management**: Add and manage multiple RSS feeds from your favorite sources
+- **AI-Powered Content Generation**: Leverage Google's Gemini AI to generate engaging newsletter content
+- **Smart Article Curation**: Automatically fetch and organize articles from your RSS feeds
+- **Newsletter Customization**: Personalize newsletters with custom branding, tone, and style
+- **User Settings**: Configure newsletter preferences including:
+  - Newsletter name and description
+  - Target audience
+  - Brand voice and company information
+  - Custom footer and sender details
+- **Authentication**: Secure user authentication powered by Clerk
+- **Modern UI**: Beautiful, responsive interface built with Next.js 16 and Tailwind CSS
+- **Database**: MongoDB with Prisma ORM for efficient data management
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) with React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Database**: MongoDB with [Prisma](https://www.prisma.io/)
+- **Authentication**: [Clerk](https://clerk.com/)
+- **AI**: Google Gemini AI via Vercel AI SDK
+- **UI Components**: Radix UI primitives
+- **Package Manager**: pnpm
+- **Code Quality**: Biome (linting & formatting)
+- **Deployment**: Google Cloud Run with Docker
+
+## 📋 Prerequisites
+
+- Node.js 20 or higher
+- pnpm (recommended) or npm
+- MongoDB database (local or cloud)
+- Clerk account for authentication
+- Google AI API key for Gemini
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd Newletter-AI-App
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Set up environment variables
 
-## Learn More
+Create a `.env` file in the root directory with the following variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# Database
+DATABASE_URL="your-mongodb-connection-string"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+CLERK_SECRET_KEY="sk_test_..."
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Google AI
+GOOGLE_GENERATIVE_AI_API_KEY="your-gemini-api-key"
+```
 
-## Deploy on Vercel
+### 4. Set up the database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Generate Prisma Client
+pnpm prisma:generate
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Push schema to database
+pnpm prisma:push
+```
+
+### 5. Run the development server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 📦 Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run Biome linter
+- `pnpm format` - Format code with Biome
+- `pnpm prisma:generate` - Generate Prisma Client
+- `pnpm prisma:push` - Push schema changes to database
+- `pnpm prisma:studio` - Open Prisma Studio
+
+## 🗄️ Database Schema
+
+The application uses the following main models:
+
+- **User**: Stores user information (linked to Clerk)
+- **UserSettings**: User preferences for newsletter generation
+- **RssFeed**: RSS feed sources
+- **RssArticle**: Individual articles from RSS feeds (deduplicated)
+- **Newsletter**: Generated newsletters with AI content
+
+## 🎨 Project Structure
+
+```
+├── app/                    # Next.js app directory
+│   ├── api/               # API routes
+│   ├── dashboard/         # Dashboard pages
+│   └── page.tsx           # Landing page
+├── actions/               # Server actions
+│   ├── newsletter.ts      # Newsletter operations
+│   ├── rss-feed.ts        # RSS feed management
+│   ├── user-settings.ts   # User settings
+│   └── ...
+├── components/            # React components
+│   ├── dashboard/         # Dashboard components
+│   ├── landing/           # Landing page components
+│   └── ui/                # Reusable UI components
+├── lib/                   # Utility functions
+├── prisma/                # Prisma schema
+├── public/                # Static assets
+├── .github/workflows/     # GitHub Actions CI/CD
+├── Dockerfile             # Docker configuration
+└── cloudbuild.yaml        # Google Cloud Build config
+```
+
+## 🐳 Docker
+
+### Build locally
+
+```bash
+docker build -t newsletter-app \
+  --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_... .
+```
+
+### Run locally
+
+```bash
+docker run -p 3000:3000 --env-file .env newsletter-app
+```
+
+## ☁️ Deployment
+
+The application is configured for deployment to Google Cloud Run with automated CI/CD via GitHub Actions.
+
+### Prerequisites
+
+1. Google Cloud Project with billing enabled
+2. Required APIs enabled:
+   - Cloud Run
+   - Cloud Build
+   - Artifact Registry
+
+### Service Account Permissions
+
+The deployment service account needs:
+- `roles/artifactregistry.writer`
+- `roles/cloudbuild.builds.editor`
+- `roles/iam.serviceAccountUser`
+- `roles/logging.logWriter`
+- `roles/run.admin`
+- `roles/serviceusage.serviceUsageConsumer`
+
+### GitHub Secrets
+
+Configure the following secrets in your GitHub repository:
+
+- `GCP_PROJECT_ID` - Your GCP project ID
+- `GCP_REGION` - Deployment region (e.g., us-central1)
+- `GCP_SA_KEY` - Service account JSON key
+- `DATABASE_URL` - MongoDB connection string
+- `CLERK_SECRET_KEY` - Clerk secret key
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk publishable key
+- `GOOGLE_GENERATIVE_AI_API_KEY` - Google AI API key
+
+### Deployment Workflow
+
+The application automatically deploys to Cloud Run when changes are pushed to the `main` branch. See [DEPLOY.md](./DEPLOY.md) for detailed deployment instructions.
+
+## 🔒 Security
+
+- Authentication handled by Clerk
+- Environment variables for sensitive data
+- Service account with minimal required permissions
+- MongoDB connection with proper access controls
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 Code Style
+
+This project uses Biome for linting and formatting. Run `pnpm lint` before committing.
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [Clerk](https://clerk.com/)
+- [Prisma](https://www.prisma.io/)
+- [Google Gemini AI](https://ai.google.dev/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+## 📧 Support
+
+For support, please open an issue in the repository.
+
+---
+
+Built with ❤️ using Next.js and Google Gemini AI
