@@ -11,6 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Configure default settings for your newsletter generation",
+};
 
 export default async function SettingsPage() {
   const { userId, has } = await auth();

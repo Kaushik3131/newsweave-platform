@@ -1,6 +1,12 @@
 import { UserProfile } from "@clerk/nextjs";
 import { User } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/page-header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Account Settings",
+  description: "Manage your account settings and profile information",
+};
 
 export default function AccountPage() {
   return (

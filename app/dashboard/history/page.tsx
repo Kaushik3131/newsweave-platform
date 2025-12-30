@@ -12,6 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Newsletter History",
+  description: "View and manage your saved newsletters",
+};
 
 export default async function HistoryPage() {
   const { userId, has } = await auth();

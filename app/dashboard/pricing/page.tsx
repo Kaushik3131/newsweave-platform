@@ -8,6 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing",
+  description: "Manage your subscription and explore available plans",
+};
 
 export default async function PricingPage() {
   const { has } = await auth();

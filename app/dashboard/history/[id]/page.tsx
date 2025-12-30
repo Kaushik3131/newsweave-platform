@@ -9,11 +9,49 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const { userId } = await auth();
+
+  if (!userId) {
+    return {
+      title: "Newsletter Detail",
+      description: "View your saved newsletter",
+    };
+  }
+
+  try {
+    const user = await upsertUserFromClerk(userId);
+    const newsletter = await getNewsletterById(id, user.id);
+
+    if (!newsletter) {
+      return {
+        title: "Newsletter Not Found",
+        description: "The requested newsletter could not be found",
+      };
+    }
+
+    return {
+      title: `Newsletter - ${new Date(newsletter.createdAt).toLocaleDateString()}`,
+      description:
+        newsletter.suggestedTitles[0] || "View your saved newsletter",
+    };
+  } catch {
+    return {
+      title: "Newsletter Detail",
+      description: "View your saved newsletter",
+    };
+  }
 }
 
 export default async function NewsletterDetailPage({ params }: PageProps) {

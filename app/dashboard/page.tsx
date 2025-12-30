@@ -2,6 +2,12 @@ import { Sparkles } from "lucide-react";
 import { NewsletterGenerator } from "@/components/dashboard/newsletter-generator";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { RssFeedManager } from "@/components/dashboard/rss-feed-manager";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Manage your RSS feeds and generate AI-powered newsletters",
+};
 
 async function Dashboard() {
   return (

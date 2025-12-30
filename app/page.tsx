@@ -4,6 +4,13 @@ import { Features } from "@/components/landing/features";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Pricing } from "@/components/landing/pricing";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Create professional newsletters from RSS feeds using Google's Gemini AI. Curate content, customize settings, and generate engaging newsletters in minutes.",
+};
 
 export default function Home() {
   return (
