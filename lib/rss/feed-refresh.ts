@@ -23,7 +23,7 @@ export const CACHE_WINDOW = 3 * 60 * 60 * 1000; // 3 hours
  * Limits the number of articles to keep AI prompts manageable
  * and generation times reasonable
  */
-export const ARTICLE_LIMIT = 5;
+export const ARTICLE_LIMIT = 100;
 
 /**
  * Determines which feeds need refreshing (older than 3 hours)

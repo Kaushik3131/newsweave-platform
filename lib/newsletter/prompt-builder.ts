@@ -117,15 +117,13 @@ function buildBodyRequirements(params: NewsletterPromptParams): string[] {
   const requirements = [
     "Strong opening hook",
     "The newsletter body MUST contain at least 10 main headings",
-    "Use headings (##, ###) for clear structure",
-    "Explanations must be concise summaries, not deep dives",
-    "Highlight important stories with brief context",
-    "Group related stories thematically where appropriate",
+    "Use headings (##, ###) for structure",
+    "Highlight important stories with context",
+    "Group related stories thematically",
     "Use **bold** and *italics* for emphasis",
-    "Include blockquotes (>) for key quotes (keep them short)",
-    "DO NOT write paragraphs or long explanations",
-    "Maintain a professional, engaging tone",
-    "Conclude with a brief forward-looking statement (1–2 lines maximum)",
+    "Include blockquotes (>) for key quotes",
+    "Maintain professional, engaging tone",
+    "Conclude with forward-looking statement",
   ];
 
   // Add disclaimer requirement if present
@@ -222,7 +220,7 @@ export function buildNewsletterPrompt(params: NewsletterPromptParams): string {
     "",
     "1. **5 Newsletter Titles**: Creative titles capturing the content period",
     "2. **5 Email Subject Lines**: Compelling subject lines to drive opens",
-    "3. **Newsletter Body** (300-800 words, Markdown format):",
+    "3. **Newsletter Body** (500-1000 words, Markdown format):",
     ...bodyRequirements.map((req) => `   - ${req}`),
     "4. **5 Top Announcements**: Brief, punchy format",
     "5. **Additional Information**: Supplementary notes, trends, recommendations (Markdown)",
