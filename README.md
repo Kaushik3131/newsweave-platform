@@ -403,6 +403,10 @@ model Newsletter {
 
 **🌐 Cloud Run Deployment:** <a href="https://newsletter-ai-app-831884341768.asia-south1.run.app" target="_blank">https://newsletter-ai-app-831884341768.asia-south1.run.app</a>
 
+### Application Demo
+
+![NewsWeave Demo](./docs/gif-demo.gif)
+
 **Features to Try:**
 - 📰 **RSS Feed Management** - Add your favorite RSS feeds
 - 🤖 **AI Newsletter Generation** - Generate newsletters with custom instructions
